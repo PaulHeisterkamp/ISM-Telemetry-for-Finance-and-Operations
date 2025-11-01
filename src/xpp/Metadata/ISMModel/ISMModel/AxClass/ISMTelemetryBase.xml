@@ -35,25 +35,84 @@ abstract class ISMTelemetryBase
         stopWatch = new System.Diagnostics.Stopwatch();
         stopWatch.Start();
 
+        this.initialize();
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initialize</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Initializes the telemetry.
+    /// </summary>
+    public void initialize()
+    {
         logParams = ISMTelemetryParameterSetup::find(this.telemetryName());
 
         if (!logParams)
         {
-            logParams.TelemetryClass = this.telemetryName();
-            logParams.IsEnabled = NoYes::Yes;
-            logParams.SeverityLevel = ISMTelemetrySeverityLevel::Information;
+            this.initializeParameterSetup(logParams);
         }
 
         DictClass dictClass = new DictClass(className2Id(this.telemetryConfigurationName()));
         telemetryConfig = dictClass.makeObject();
         if (logParams.TelemetryConfiguration == conNull())
         {
+            this.initializeConfiguration(telemetryConfig);
             logParams.TelemetryConfiguration = telemetryConfig.pack();
         }
         else
         {
             telemetryConfig.unpack(logParams.TelemetryConfiguration);
         }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initializeParameterSetup</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Initializes the parameter setup values.
+    /// </summary>
+    /// <param name = "_parameterSetup">The parameter setup record to initialize.</param>
+    protected void initializeParameterSetup(ISMTelemetryParameterSetup _parameterSetup)
+    {
+        _parameterSetup.TelemetryClass = this.telemetryName();
+        _parameterSetup.IsEnabled = NoYes::Yes;
+        _parameterSetup.SeverityLevel = ISMTelemetrySeverityLevel::Information;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>initializeConfiguration</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Initializes the configuration.
+    /// </summary>
+    /// <param name = "_configuration">The configuration to initialize</param>
+    /// <remarks>
+    /// Override this method in the subclass if custom configuration initialization is required.
+    /// </remarks>
+    protected void initializeConfiguration(SysPackable _configuration)
+    {
+        //no default implementation
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getParameterSetup</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Gets the telemetry parameter setup
+    /// </summary>
+    /// <returns>The telemetry parameter setup</returns>
+    public ISMTelemetryParameterSetup getParameterSetup()
+    {
+        return logParams;
     }
 
 ]]></Source>
@@ -509,7 +568,7 @@ abstract class ISMTelemetryBase
     /// <param name = "_contract">Parameter to define the contract class</param>
     /// <remarks>
     /// Method is not called, only defines the contract class via its signature.
-    /// If a telemetry requires custom configuration, create a new define<TelemetryName>Contract 
+    /// If a telemetry requires custom configuration, create a new define[TelemetryName]Contract
     /// method in the subclass. The method name needs to be specified by the override of the
     /// getContractDefiningMethodName method.
     /// </remarks>

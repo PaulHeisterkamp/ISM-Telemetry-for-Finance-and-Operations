@@ -71,6 +71,22 @@
 													i:nil="true" />
 												<Text>@ISM:ISMTelemetryConfiguration</Text>
 											</AxFormControl>
+											<AxFormControl xmlns=""
+												i:type="AxFormButtonSeparatorControl">
+												<Name>ISMTelemetryButtonSeparator</Name>
+												<Type>ButtonSeparator</Type>
+												<FormControlExtension
+													i:nil="true" />
+											</AxFormControl>
+											<AxFormControl xmlns=""
+												i:type="AxFormButtonControl">
+												<Name>ISMTelemetryReinitializeParameterSetups</Name>
+												<HelpText>@ISM:ISMTelemetryReinitializeParameterSetupsHelp</HelpText>
+												<Type>Button</Type>
+												<FormControlExtension
+													i:nil="true" />
+												<Text>@ISM:ISMTelemetryReinitializeParameterSetups</Text>
+											</AxFormControl>
 										</Controls>
 									</AxFormControl>
 								</Controls>
