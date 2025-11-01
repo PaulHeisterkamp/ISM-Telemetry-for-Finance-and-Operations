@@ -407,7 +407,7 @@ abstract class ISMTelemetryBase
     /// </summary>
     /// <param name = "_severity"> Severity level </param>
     /// <returns>bool wheter to log telemetry or not</returns>
-    private boolean shouldSkipOnSeverityLevel(ISMTelemetrySeverityLevel _severity)
+    protected boolean shouldSkipOnSeverityLevel(ISMTelemetrySeverityLevel _severity)
     {
         return logParams.SeverityLevel > _severity;
     }
