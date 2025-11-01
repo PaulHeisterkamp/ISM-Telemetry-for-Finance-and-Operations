@@ -22,6 +22,8 @@ abstract class ISMTelemetryBase
     //you can fill this field or not, if you don't fill it, it will be set to 0
     protected str eventId;
 
+    protected SysPackable telemetryConfig;
+
 }
 ]]></Declaration>
 		<Methods>
@@ -40,6 +42,17 @@ abstract class ISMTelemetryBase
             logParams.TelemetryClass = this.telemetryName();
             logParams.IsEnabled = NoYes::Yes;
             logParams.SeverityLevel = ISMTelemetrySeverityLevel::Information;
+        }
+
+        DictClass dictClass = new DictClass(className2Id(this.telemetryConfigurationName()));
+        telemetryConfig = dictClass.makeObject();
+        if (logParams.TelemetryConfiguration == conNull())
+        {
+            logParams.TelemetryConfiguration = telemetryConfig.pack();
+        }
+        else
+        {
+            telemetryConfig.unpack(logParams.TelemetryConfiguration);
         }
     }
 
@@ -446,6 +459,148 @@ abstract class ISMTelemetryBase
     protected ClassName telemetryName()
     {
         return classId2Name(classIdGet(this));
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>telemetryConfigurationName</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Defines the class used for the telemetry configuration
+    /// </summary>
+    /// <returns>The telemetry configuration class name</returns>
+    /// <remarks>
+    /// If a telemetry requires custom configuration, override this method in the telemetry subclass.
+    /// </remarks>
+    protected ClassName telemetryConfigurationName()
+    {
+        return classStr(ISMTelemetryBaseContract);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getContractDefiningMethodName</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Defines the method name used by the SysOperation framework to determine the contract class
+    /// for the configuration dialog.
+    /// </summary>
+    /// <returns>The method name defining the configuration contract class.</returns>
+    /// <remarks>
+    /// Overwrite this method in the subclass if a custom configuration is required for a telemetry.
+    /// If not overwritten, an empty dummy contract is used.
+    /// </remarks>
+    public MethodName getContractDefiningMethodName()
+    {
+        return methodStr(ISMTelemetryBase, defineBaseContract);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>defineBaseContract</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Method signature provides the contract class to the SysOperation framework to
+    /// dynamically generate the configuration dialog.
+    /// </summary>
+    /// <param name = "_contract">Parameter to define the contract class</param>
+    /// <remarks>
+    /// Method is not called, only defines the contract class via its signature.
+    /// If a telemetry requires custom configuration, create a new define<TelemetryName>Contract 
+    /// method in the subclass. The method name needs to be specified by the override of the
+    /// getContractDefiningMethodName method.
+    /// </remarks>
+    public void defineBaseContract(ISMTelemetryBaseContract _contract)
+    {
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>fillConfigurationContract</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// This method fills the configuration contract of the base telemetry with the necessary values.
+    /// </summary>
+    /// <param name = "_contract">The contract to fill with configuration values</param>
+    /// <remarks>
+    /// If a telemetry requires custom configuration, override this method in the telemetry 
+    /// subclass with the correct configuration class for the _contract parameter.
+    /// </remarks>
+    public void fillConfigurationContract(SysPackable _contract)
+    {
+        ISMTelemetryBaseContract contract;
+        if (_contract && _contract is ISMTelemetryBaseContract)
+        {
+            contract = _contract as ISMTelemetryBaseContract;
+            if (telemetryConfig != null)
+            {
+                contract.unpack(telemetryConfig.pack());
+            }
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setConfigurationFromContract</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Sets the telemetry configuration based on the given contract.
+    /// </summary>
+    /// <param name = "_contract">The contract to use for the telemetry configuration.</param>
+    public void setConfigurationFromContract(SysPackable _contract)
+    {
+        this.setTelemetryConfiguration(_contract);
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>setTelemetryConfiguration</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Sets the telemetry configuration of the base telemetry based on the given contract.
+    /// </summary>
+    /// <param name = "_config">The configuration contract to use for base telemetry setup.</param>
+    /// <remarks>
+    /// If a telemetry requires custom configuration, override this method in the telemetry with
+    /// the correct configuration class for the _config parameter.
+    /// </remarks>
+    protected void setTelemetryConfiguration(SysPackable _config)
+    {
+        telemetryConfig = _config as ISMTelemetryBaseContract;
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>getConfigurationContainer</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Gets the telemetry configuration as a container.
+    /// </summary>
+    /// <returns>The telemetry configuration container.</returns>
+    public container getConfigurationContainer()
+    {
+        return telemetryConfig.pack();
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>configurationDescription</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Defines the description of the telemetry configuration
+    /// </summary>
+    /// <returns>The description of the telemetry configuration</returns>
+    public ClassDescription configurationDescription()
+    {
+        return strFmt("@ISM:ISMTelemetryConfigurationDescription", this.telemetryName());
     }
 
 ]]></Source>

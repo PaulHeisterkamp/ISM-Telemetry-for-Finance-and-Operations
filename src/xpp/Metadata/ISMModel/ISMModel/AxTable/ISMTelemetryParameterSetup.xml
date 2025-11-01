@@ -126,6 +126,13 @@ public class ISMTelemetryParameterSetup extends common
 			<Name>SeverityLevel</Name>
 			<EnumType>ISMTelemetrySeverityLevel</EnumType>
 		</AxTableField>
+		<AxTableField xmlns=""
+			i:type="AxTableFieldContainer">
+			<Name>TelemetryConfiguration</Name>
+			<ExtendedDataType>ISMTelemetryConfiguration</ExtendedDataType>
+			<IgnoreEDTRelation>Yes</IgnoreEDTRelation>
+			<Visible>No</Visible>
+		</AxTableField>
 	</Fields>
 	<FullTextIndexes />
 	<Indexes>

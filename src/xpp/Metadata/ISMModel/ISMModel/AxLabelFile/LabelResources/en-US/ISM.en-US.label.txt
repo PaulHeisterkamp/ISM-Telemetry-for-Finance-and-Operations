@@ -1,5 +1,7 @@
 ﻿ISMTelemetryAddCallStackError=Telemetry Add Call Stack Error - className : %1
 ISMTelemetryClass=Telemetry class
+ISMTelemetryConfiguration=Telemetry configuration
+ISMTelemetryConfigurationDescription=Configuration for telemetry %1
 ISMTelemetryEventError=Telemetry Event Processing Error: className : %1 - EventName: %2
 ISMTelemetryGoup=Telemetry
 ISMTelemetryIsEnabled=Is Enabled

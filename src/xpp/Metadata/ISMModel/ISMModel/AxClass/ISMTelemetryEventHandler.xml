@@ -10,6 +10,8 @@
 /// </summary>
 internal final class ISMTelemetryEventHandler
 {
+    
+
 }
 ]]></Declaration>
 		<Methods>
@@ -55,6 +57,38 @@ internal final class ISMTelemetryEventHandler
                     ttscommit;
                 }
             }
+        }
+    }
+
+]]></Source>
+			</Method>
+			<Method>
+				<Name>ISMTelemetryConfiguration_OnClicked</Name>
+				<Source><![CDATA[
+    /// <summary>
+    /// Opens the telemetry configuration dialog for the selected telemetry parameter setup.
+    /// </summary>
+    /// <param name="sender">The sender of the event.</param>
+    /// <param name="e">Event arguments associated with the event.</param>
+    [
+        SuppressBPWarning('BPParameterNotUsed', 'Parameter required by the event interface.'),
+        FormControlEventHandler(
+            formControlStr(SysIntParameters, ISMTelemetryConfiguration), 
+            FormControlEventType::Clicked)
+    ]
+    public static void ISMTelemetryConfiguration_OnClicked(
+        FormControl sender, 
+        FormControlEventArgs e)
+    {
+        FormRun formRun = sender.formRun();
+        FormDataSource formDataSource = 
+            formRun.dataSource(formDataSourceStr(SysIntParameters, ISMTelemetryParameterSetup));
+        ISMTelemetryParameterSetup telemetryParameterSetup = formDataSource.cursor();
+        DictClass dictClass = new DictClass(className2Id(telemetryParameterSetup.TelemetryClass));
+        ISMTelemetryBase telemetry = dictClass.makeObject();
+        if (ISMTelemetryConfigurationDialogController::telemetryConfigurationDialog(telemetry))
+        {
+            telemetryParameterSetup.TelemetryConfiguration = telemetry.getConfigurationContainer();
         }
     }
 

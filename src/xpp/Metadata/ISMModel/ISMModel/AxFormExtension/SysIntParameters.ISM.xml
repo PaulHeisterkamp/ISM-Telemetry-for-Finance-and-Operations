@@ -50,6 +50,33 @@
 							i:nil="true" />
 						<Controls>
 							<AxFormControl xmlns=""
+								i:type="AxFormActionPaneControl">
+								<Name>ISMTelemetryActionPane</Name>
+								<Type>ActionPane</Type>
+								<FormControlExtension
+									i:nil="true" />
+								<Controls>
+									<AxFormControl xmlns=""
+										i:type="AxFormButtonGroupControl">
+										<Name>ISMTelemetryConfigurationButtonGroup</Name>
+										<Type>ButtonGroup</Type>
+										<FormControlExtension
+											i:nil="true" />
+										<Controls>
+											<AxFormControl xmlns=""
+												i:type="AxFormButtonControl">
+												<Name>ISMTelemetryConfiguration</Name>
+												<Type>Button</Type>
+												<FormControlExtension
+													i:nil="true" />
+												<Text>@ISM:ISMTelemetryConfiguration</Text>
+											</AxFormControl>
+										</Controls>
+									</AxFormControl>
+								</Controls>
+								<Style>Strip</Style>
+							</AxFormControl>
+							<AxFormControl xmlns=""
 								i:type="AxFormGridControl">
 								<Name>ISMTelemetryLogParam</Name>
 								<Type>Grid</Type>
