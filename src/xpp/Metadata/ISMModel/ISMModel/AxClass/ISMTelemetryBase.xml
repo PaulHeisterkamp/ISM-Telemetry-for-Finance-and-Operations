@@ -189,7 +189,7 @@ abstract class ISMTelemetryBase
     /// <summary>
     ///  Adds the call stack to the telemetry
     /// </summary>
-    public void addCallStack()
+    public void addCallStack(boolean _compressCallStack = true)
     {
         try
         {
@@ -201,7 +201,8 @@ abstract class ISMTelemetryBase
                 callStackStr += conpeek(ismCallStack, i);
             }
             //make sure callstack is compressed
-            this.addRuntimeProperty(ISMTelemetryProperties::CallStack, callStackStr, true);
+            this.addRuntimeProperty(
+                ISMTelemetryProperties::CallStack, callStackStr, _compressCallStack);
 
         }
         catch
